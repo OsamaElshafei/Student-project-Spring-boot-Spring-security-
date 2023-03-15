@@ -25,20 +25,7 @@ public class StudentController {
     public Student getstudentbyID (@RequestParam Long id) {
         return studentServices.getstudentbyID(id);
     }
-    @PostMapping ("AddStudent")
-    public Student AddStudent (@RequestBody Student student) {
-        return studentServices.Addstudent(student);
-    }
-    @PutMapping("Update")
-    public Student UpdateStudet (@RequestBody Student student,@RequestParam Long id) {
-        student.setId(id);
-        return studentServices.UpdateStudent(student);
-    }
-    @DeleteMapping("delete")
-    public void UpdateStudet (@RequestParam Long id) {
-         studentServices.deleteStudetbyID(id);
-    }
-    @GetMapping("studentbyname")
+
     public List<Student> findstudentbyname (@RequestParam String name,@RequestParam int page,@RequestParam int size){
         return studentServices.findstudentbyname(name,page,size);
     }

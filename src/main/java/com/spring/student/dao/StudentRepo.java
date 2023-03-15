@@ -7,15 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-
 public interface StudentRepo extends JpaRepository<Student,Long> {
    public List<Student> findByFullNameContains(String name, Pageable pageable);
    public List<Student> findByFullNameContains(String name);
 
    @Query("select count(id) from student ")
    public Long studentsize();
-
 }
