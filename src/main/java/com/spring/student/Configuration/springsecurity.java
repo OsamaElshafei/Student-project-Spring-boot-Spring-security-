@@ -1,5 +1,6 @@
 package com.spring.student.Configuration;
 
+import com.spring.student.Filter.JwtTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.Expression
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -24,7 +26,8 @@ public class springsecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-http.cors().configurationSource(new CorsConfigurationSource() {
+http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().cors().configurationSource(new CorsConfigurationSource() {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration config = new CorsConfiguration() ;
@@ -36,7 +39,7 @@ http.cors().configurationSource(new CorsConfigurationSource() {
                 return config;
             }
         }).and().csrf()
-         .disable().
+         .disable().addFilterAfter(new JwtTokenFilter(),BasicAuthenticationFilter.class).
         authorizeRequests()
         .antMatchers("/System/*").hasRole("ADMIN")
         .antMatchers("/ADMIN/*").hasRole("USER")
