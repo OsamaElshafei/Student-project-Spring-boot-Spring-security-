@@ -1,5 +1,6 @@
 package com.spring.student.Configuration;
 
+import com.spring.student.Filter.JWTDecoder;
 import com.spring.student.Filter.JwtTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +41,8 @@ http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
         }).and().csrf()
          .disable().addFilterAfter(new JwtTokenFilter(),BasicAuthenticationFilter.class).
-        authorizeRequests()
+        addFilterBefore(new JWTDecoder(),BasicAuthenticationFilter.class)
+                . authorizeRequests()
         .antMatchers("/System/*").hasRole("ADMIN")
         .antMatchers("/ADMIN/*").hasRole("USER")
         .and()
